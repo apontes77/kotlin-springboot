@@ -3,6 +3,7 @@ package br.com.alexandre.forum.service
 import br.com.alexandre.forum.controller.form.AtualizacaoTopicoForm
 import br.com.alexandre.forum.controller.form.TopicoForm
 import br.com.alexandre.forum.controller.view.TopicoView
+import br.com.alexandre.forum.exception.NotFoundException
 import br.com.alexandre.forum.mapper.TopicoFormMapper
 import br.com.alexandre.forum.mapper.TopicoViewMapper
 import br.com.alexandre.forum.model.Topico
@@ -13,7 +14,8 @@ import java.util.stream.Collectors
 class TopicoService (
     var topicos: List<Topico> = ArrayList(),
     val topicoViewMapper: TopicoViewMapper,
-    val topicoFormMapper: TopicoFormMapper
+    val topicoFormMapper: TopicoFormMapper,
+    private val notFoundMessage: String = "Tópico não encontrado!"
     ){
 
     fun listar(): List<TopicoView> {
@@ -25,7 +27,7 @@ class TopicoService (
     fun buscarPorID(id: Long): TopicoView {
       val topico = topicos.stream()
             .filter { t -> t.id == id }
-            .findFirst().get()
+            .findFirst().orElseThrow{NotFoundException(notFoundMessage)}
 
         return topicoViewMapper.map(topico)
     }
@@ -59,7 +61,7 @@ class TopicoService (
     fun excluir(id: Long) {
         var topico = topicos.stream().filter { t ->
             t.id == id
-        }.findFirst().get()
+        }.findFirst().orElseThrow{NotFoundException(notFoundMessage)}
 
         topicos = topicos.minus(topico)
     }
