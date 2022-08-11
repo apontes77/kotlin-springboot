@@ -6,6 +6,7 @@ import br.com.alexandre.forum.controller.view.TopicoView
 import br.com.alexandre.forum.service.TopicoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,6 +35,7 @@ class TopicoController (private val topicoService: TopicoService) {
     }
 
     @PostMapping
+    @Transactional
     fun cadastrar(@RequestBody @Valid topico: TopicoForm, uriBuilder: UriComponentsBuilder): ResponseEntity<TopicoView> {
         val topicoView = topicoService.cadastrar(topico)
         val uri = uriBuilder.path("/topicos/${topicoView.id}").build().toUri()
@@ -41,12 +43,14 @@ class TopicoController (private val topicoService: TopicoService) {
     }
 
     @PutMapping
+    @Transactional
     fun atualizar(@RequestBody @Valid form: AtualizacaoTopicoForm): ResponseEntity<TopicoView> {
         val topicoView = topicoService.atualizar(form)
         return ResponseEntity.ok(topicoView)
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun excluir(@PathVariable id: Long) {
         topicoService.excluir(id)

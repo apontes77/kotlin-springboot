@@ -1,24 +1,15 @@
 package br.com.alexandre.forum.service
 
 import br.com.alexandre.forum.model.Usuario
+import br.com.alexandre.forum.repository.UsuarioRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class UsuarioService(var usuarios: List<Usuario>) {
-
-    init {
-        val usuario = Usuario(
-            id = 1,
-            nome = "Ana",
-            email = "ana@mail.com"
-        )
-        usuarios = listOf(usuario)
-    }
+class UsuarioService(private val repository: UsuarioRepository) {
 
     fun buscarPorId(idAutor: Long): Usuario {
-        return usuarios.stream()
-            .filter { u -> u.id == idAutor }
-            .findFirst().get()
+        return repository.findById(idAutor).get()
     }
 
 }
