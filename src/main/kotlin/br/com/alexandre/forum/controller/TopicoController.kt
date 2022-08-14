@@ -38,6 +38,10 @@ class TopicoController (private val topicoService: TopicoService) {
     ): Page<TopicoView> {
        return topicoService.listar(nomeCurso, paginacao)
     }
+    @GetMapping("/relatorio")
+    fun relatorio(): List<TopicoPorCategoriaDto> {
+        return topicoService.relatorio()
+    }
 
     @GetMapping("/{id}")
     fun listarPorId(@PathVariable id: Long): TopicoView {

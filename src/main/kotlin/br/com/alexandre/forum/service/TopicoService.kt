@@ -1,5 +1,6 @@
 package br.com.alexandre.forum.service
 
+import br.com.alexandre.forum.controller.TopicoPorCategoriaDto
 import br.com.alexandre.forum.controller.form.AtualizacaoTopicoForm
 import br.com.alexandre.forum.controller.form.TopicoForm
 import br.com.alexandre.forum.controller.view.TopicoView
@@ -56,4 +57,9 @@ class TopicoService (
     fun excluir(id: Long) {
         repository.deleteById(id)
     }
+
+    fun relatorio(): List<TopicoPorCategoriaDto> {
+        return repository.relatorio()
+    }
+
 }
