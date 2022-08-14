@@ -1,11 +1,11 @@
-CREATE TABLE resposta(
-   id bigint NOT NULL auto_increment,
-   mensagem VARCHAR(300) NOT NULL,
-   data_criacao datetime NOT NULL,
-   topico_id bigint NOT NULL,
-   autor_id bigint NOT NULL,
-   solucao INT(1) NOT NULL,
-   PRIMARY KEY(id),
-   FOREIGN KEY(topico_id) REFERENCES topico(id),
-   FOREIGN KEY(autor_id) REFERENCES usuario(id)
+create table resposta(
+    id bigint not null auto_increment,
+    mensagem varchar(300) not null,
+    data_criacao datetime not null,
+    topico_id bigint not null,
+    autor_id bigint not null,
+    solucao int(1) not null,
+    primary key(id),
+    foreign key(topico_id) references topico(id),
+    foreign key(autor_id) references usuario(id)
 );

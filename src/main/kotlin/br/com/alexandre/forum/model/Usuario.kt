@@ -9,7 +9,7 @@ import javax.persistence.Id
 data class Usuario (
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        val id: Long? = null,
         val nome: String,
         val email: String
 )
