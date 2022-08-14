@@ -4,6 +4,8 @@ import br.com.alexandre.forum.controller.form.AtualizacaoTopicoForm
 import br.com.alexandre.forum.controller.form.TopicoForm
 import br.com.alexandre.forum.controller.view.TopicoView
 import br.com.alexandre.forum.service.TopicoService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -26,8 +28,10 @@ import javax.validation.Valid
 class TopicoController (private val topicoService: TopicoService) {
 
     @GetMapping
-    fun listar(@RequestParam(required = false) nomeCurso: String?):List<TopicoView> {
-       return topicoService.listar(nomeCurso)
+    fun listar(@RequestParam(required = false) nomeCurso: String?,
+               paginacao: Pageable
+    ): Page<TopicoView> {
+       return topicoService.listar(nomeCurso, paginacao)
     }
 
     @GetMapping("/{id}")
