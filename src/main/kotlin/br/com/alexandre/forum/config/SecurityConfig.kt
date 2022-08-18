@@ -1,5 +1,6 @@
 package br.com.alexandre.forum.config
 
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -27,7 +28,8 @@ class SecurityConfig(
         auth?.userDetailsService(userDetailsService)?.passwordEncoder(bCryptPasswordEncoder())
     }
 
-    private fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+    @Bean
+     fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
 }
