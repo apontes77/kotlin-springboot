@@ -1,8 +1,10 @@
 package br.com.alexandre.forum.config
 
+import br.com.alexandre.forum.security.JWTAuthenticationFilter
 import br.com.alexandre.forum.security.JWTLoginFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -20,16 +22,23 @@ class SecurityConfig(
 ): WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http?.
+        csrf()?.disable()?.
         authorizeRequests()?.
-        //antMatchers("/topicos")?.hasAuthority("LEITURA-ESCRITA")?.
-        antMatchers("/login")?.permitAll()?.
-        anyRequest()
-        ?.authenticated()?.and()
-        http?.addFilterBefore(JWTLoginFilter(authManager = authenticationManager(), jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter().javaClass)
-        http?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.
-         and()?.
-         formLogin()?.disable()?.
-            httpBasic()
+        antMatchers("/topicos")?.hasAuthority("LEITURA-ESCRITA")?.
+        antMatchers(HttpMethod.POST,"/login")?.permitAll()?.
+        anyRequest()?.
+        authenticated()?.
+        and()
+        http?.addFilterBefore(
+            JWTLoginFilter
+            (
+                authManager = authenticationManager(),
+                jwtUtil = jwtUtil
+            ),
+            UsernamePasswordAuthenticationFilter().javaClass
+        )
+        http?.addFilterBefore(JWTAuthenticationFilter(jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter::class.java)
+        http?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
