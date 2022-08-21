@@ -17,11 +17,13 @@ class SecurityConfig(
 ): WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http?.
-        authorizeRequests()?.anyRequest()
+        authorizeRequests()?.antMatchers("/topicos")?.hasAuthority("LEITURA-ESCRITA")?.
+        anyRequest()
         ?.authenticated()?.and()
         ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.
          and()?.
-         formLogin()?.disable()?.httpBasic()
+         formLogin()?.disable()?.
+            httpBasic()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
