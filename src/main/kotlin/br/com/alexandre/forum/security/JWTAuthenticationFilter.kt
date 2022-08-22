@@ -23,7 +23,7 @@ class JWTAuthenticationFilter(private val jwtUtil: JWTUtil) : OncePerRequestFilt
         return token?.let {
             jwt ->
             jwt.startsWith("Bearer ")
-            jwt.substring(7, token.length)
+            jwt.substring(7, jwt.length)
         }
     }
 
