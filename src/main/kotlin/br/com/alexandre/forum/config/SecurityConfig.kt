@@ -26,17 +26,12 @@ class SecurityConfig(
         authorizeRequests()?.
         antMatchers("/topicos")?.hasAuthority("LEITURA-ESCRITA")?.
         antMatchers(HttpMethod.POST,"/login")?.permitAll()?.
+        antMatchers(HttpMethod.GET, "/swagger-ui/*")?.permitAll()?.
+        antMatchers(HttpMethod.GET,"/v3/api-docs/**")?.permitAll()?.
         anyRequest()?.
         authenticated()?.
         and()
-        http?.addFilterBefore(
-            JWTLoginFilter
-            (
-                authManager = authenticationManager(),
-                jwtUtil = jwtUtil
-            ),
-            UsernamePasswordAuthenticationFilter().javaClass
-        )
+        http?.addFilterBefore(JWTLoginFilter(authManager = authenticationManager(), jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter().javaClass)
         http?.addFilterBefore(JWTAuthenticationFilter(jwtUtil = jwtUtil), UsernamePasswordAuthenticationFilter().javaClass)
         http?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
